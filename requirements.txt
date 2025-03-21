@@ -1,8 +1,9 @@
 flask
+flask_sqlalchemy
+gunicorn
 torch
 torchvision
 torchaudio
 transformers
 pillow
 requests
-gunicorn
