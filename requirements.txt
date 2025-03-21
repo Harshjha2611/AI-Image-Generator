@@ -1,5 +1,7 @@
 flask
-torch==2.6.0+cpu
+torch
+torchvision
+torchaudio
 transformers
 pillow
 requests
