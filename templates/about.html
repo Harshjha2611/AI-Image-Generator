@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about DreamPixel AI - Your AI image generation platform powered by Stability AI. Create stunning visuals from text prompts.">
+    <meta name="keywords" content="AI image generation, about DreamPixel, Stability AI, text to image">
+    <meta name="author" content="DreamPixel AI">
+    
+    <title>About - DreamPixel AI Image Generator</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='svg/logo.svg') }}" alt="DreamPixel Logo" class="logo"> DreamPixel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gallery"><i class="fas fa-image"></i> Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title animate-pop-in">About DreamPixel</h1>
+            <p class="page-subtitle animate-pop-in delay-1">Transforming your imagination into stunning visual reality</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h2>Our Mission</h2>
+                        <p>At DreamPixel, our mission is to democratize creative expression through artificial intelligence. We believe that everyone has a vision worth sharing, and our platform is designed to transform your ideas into stunning visual content with just a few words.</p>
+                        
+                        <h2 class="mt-5">The Technology</h2>
+                        <p>DreamPixel harnesses the power of Stability AI's cutting-edge image generation models, allowing users to create high-quality, detailed images from simple text descriptions. Our platform is continuously improving to deliver more accurate, creative, and diverse visual results.</p>
+                        
+                        <h2 class="mt-5">Our Values</h2>
+                        <ul class="values-list">
+                            <li><strong>Creativity:</strong> We celebrate and amplify human creativity through AI.</li>
+                            <li><strong>Accessibility:</strong> We strive to make powerful creative tools available to everyone.</li>
+                            <li><strong>Innovation:</strong> We continuously evolve our platform with the latest advancements in AI technology.</li>
+                            <li><strong>Community:</strong> We foster a supportive environment where users can share and appreciate AI-generated art.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <h3>Text-to-Image</h3>
+                            <p>Transform your words into vibrant, detailed images with our state-of-the-art AI models.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>Fast Generation</h3>
+                            <p>Experience quick generation times that bring your creative ideas to life in seconds.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <h3>Easy Sharing</h3>
+                            <p>Download and share your creations instantly on social media or with friends.</p>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h3>Image History</h3>
+                            <p>Access your previously generated images in our intuitive gallery interface.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="faq-section">
+                        <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+                        
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        How does AI image generation work?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        AI image generation uses sophisticated machine learning models that have been trained on millions of images and their descriptions. When you enter a text prompt, the AI interprets your words and generates a corresponding image by predicting what pixels would best represent your description based on its training.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        Is there a limit to how many images I can generate?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Currently, DreamPixel offers a generous free tier that allows multiple image generations per day. We're continuously monitoring usage to ensure a balance between accessibility and system performance.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        Can I use the generated images commercially?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Yes, images you generate with DreamPixel are yours to use. However, we recommend checking specific terms of service for any potential limitations, especially regarding depictions of real people, trademarks, or copyrighted content.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                        How can I get the best results from my prompts?
+                                    </button>
+                                </h2>
+                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        For optimal results, try to be specific and detailed in your prompts. Include information about style, lighting, composition, and mood. For example, instead of "a cat," try "a fluffy orange tabby cat playing in a sunlit meadow, digital art style."
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="/" class="btn btn-generate">
+                    <i class="fas fa-wand-magic-sparkles"></i> Start Creating Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>DreamPixel</h4>
+                    <p>Transforming imagination into visual reality with the power of AI.</p>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/gallery"><i class="fas fa-image"></i> Gallery</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="copyright">© 2023 DreamPixel. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

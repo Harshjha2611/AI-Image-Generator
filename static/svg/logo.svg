@@ -1,0 +1,39 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#paint0_linear)" />
+  
+  <!-- Decorative Elements -->
+  <circle cx="70" cy="70" r="10" fill="#ffffff" fill-opacity="0.5" />
+  <circle cx="130" cy="130" r="15" fill="#ffffff" fill-opacity="0.3" />
+  <circle cx="150" cy="60" r="8" fill="#ffffff" fill-opacity="0.4" />
+  
+  <!-- Main Icon - Artistic Eye/Lens -->
+  <path d="M100 60C70 60 50 100 50 100C50 100 70 140 100 140C130 140 150 100 150 100C150 100 130 60 100 60Z" fill="white" fill-opacity="0.9" />
+  
+  <!-- Eye Iris -->
+  <circle cx="100" cy="100" r="20" fill="#6c63ff" />
+  
+  <!-- Eye Pupil -->
+  <circle cx="100" cy="100" r="10" fill="#2a2a42" />
+  
+  <!-- Shine -->
+  <circle cx="95" cy="95" r="5" fill="white" />
+  
+  <!-- Light Rays -->
+  <path d="M100 50V40" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M100 160V150" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M50 100H40" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M160 100H150" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M70 70L60 60" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M140 140L130 130" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M140 60L130 70" stroke="white" stroke-width="4" stroke-linecap="round" />
+  <path d="M60 140L70 130" stroke="white" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="paint0_linear" x1="30" y1="30" x2="170" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6c63ff" />
+      <stop offset="1" stop-color="#ff7eb3" />
+    </linearGradient>
+  </defs>
+</svg>

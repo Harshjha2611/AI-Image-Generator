@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate stunning AI images with our powerful Stable Diffusion image generator. Create amazing artwork from text prompts instantly.">
+    <meta name="keywords" content="AI image generation, stable diffusion, text to image, AI art, digital art, image generator">
+    <meta name="author" content="AI Image Generator">
+    
+    <title>DreamPixel - AI Image Generator</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='svg/logo.svg') }}" alt="DreamPixel Logo" class="logo"> DreamPixel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gallery"><i class="fas fa-image"></i> Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title animate-pop-in">Transform Text into <span class="highlight">Stunning Images</span></h1>
+                    <p class="hero-subtitle animate-pop-in delay-1">Create amazing artwork with the power of AI. Simply type a description and watch as your ideas come to life!</p>
+                    {% if not current_user.is_authenticated %}
+                    <div class="hero-buttons animate-pop-in delay-2">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">Log In</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">Sign Up</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image-container animate-slide-in-right">
+                        <div class="floating-shapes">
+                            <div class="shape shape-1"></div>
+                            <div class="shape shape-2"></div>
+                            <div class="shape shape-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Generator Section -->
+    <section class="generator-section">
+        <div class="container">
+            <div class="generator-card">
+                <h2 class="text-center mb-4"><i class="fas fa-magic"></i> Generate Your Image</h2>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group mb-4">
+                            <input type="text" id="prompt-input" class="form-control" placeholder="Describe your image (e.g., 'sunset over mountains with a lake reflection')" aria-label="Image prompt">
+                            <button class="btn btn-generate" id="generate-btn" type="button">
+                                <i class="fas fa-wand-magic-sparkles"></i> Generate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="result-container" class="text-center">
+                            <div id="loading-indicator" class="d-none">
+                                <div class="spinner">
+                                    <div class="dot1"></div>
+                                    <div class="dot2"></div>
+                                </div>
+                                <p class="mt-3">Creating your masterpiece...</p>
+                            </div>
+                            
+                            <div id="error-message" class="alert alert-danger d-none"></div>
+                            
+                            <div id="image-container" class="d-none">
+                                <img id="generated-image" class="img-fluid rounded shadow" alt="AI Generated Image">
+                                <div class="mt-3">
+                                    <button class="btn btn-sm btn-outline-primary me-2" id="download-btn">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success" id="share-btn">
+                                        <i class="fas fa-share-alt"></i> Share
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="empty-state" class="empty-state">
+                                <i class="far fa-image fa-4x"></i>
+                                <p>Your generated image will appear here</p>
+                            </div>
+                            
+                            <div id="api-status" class="mt-3 text-center">
+                                <small class="text-muted">Using Stability AI for image generation</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Why Choose Our AI Image Generator</h2>
+            
+            <div class="row">
+                <div class="col-md-4 feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Generate high-quality images in seconds with our optimized AI processing pipeline.</p>
+                </div>
+                
+                <div class="col-md-4 feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3>Unique Results</h3>
+                    <p>Each creation is one-of-a-kind, perfectly matching your creative vision.</p>
+                </div>
+                
+                <div class="col-md-4 feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders"></i>
+                    </div>
+                    <h3>Powerful Engine</h3>
+                    <p>Powered by Stable Diffusion, one of the most advanced AI image models available.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Creations Section -->
+    <section class="recent-creations-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Community Showcase</h2>
+            <div class="row" id="recent-images-container">
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Loading recent creations...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ad Section -->
+    <section class="ad-section">
+        <div class="container">
+            <div class="ad-container">
+                <!-- Google AdSense Ad -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1234567890123456"
+                     data-ad-slot="1234567890"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section">
+        <div class="container">
+            <h2 class="text-center mb-5">How It Works</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-point">1</div>
+                    <div class="timeline-content">
+                        <h3>Enter Your Prompt</h3>
+                        <p>Type a detailed description of the image you want to create.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-point">2</div>
+                    <div class="timeline-content">
+                        <h3>AI Processing</h3>
+                        <p>Our AI model interprets your text and begins generating your image.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-point">3</div>
+                    <div class="timeline-content">
+                        <h3>Image Creation</h3>
+                        <p>Watch as your description is transformed into a stunning visual creation.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-point">4</div>
+                    <div class="timeline-content">
+                        <h3>Download & Share</h3>
+                        <p>Save your image or share it directly with friends and followers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>DreamPixel</h4>
+                    <p>Transforming imagination into visual reality with the power of AI.</p>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/gallery"><i class="fas fa-image"></i> Gallery</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-4">
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="copyright">© 2023 DreamPixel. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

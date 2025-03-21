@@ -1,0 +1,51 @@
+{% extends "base.html" if 'base.html' in templates_list else "layout.html" %}
+
+{% block title %}{{ user.username }}'s Profile - DreamPixel{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-info">
+            <h1>Welcome, {{ user.username }}</h1>
+            <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+            <p><i class="fas fa-calendar"></i> Member since {{ user.created_at.strftime('%B %d, %Y') }}</p>
+        </div>
+        <div class="profile-actions">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    
+    <h2>Your Generated Images</h2>
+    
+    {% if images %}
+        <div class="user-gallery">
+            {% for image in images %}
+                <div class="gallery-item" data-id="{{ image.id }}">
+                    <div class="gallery-image">
+                        <img src="data:image/png;base64,{{ image.image_data }}" alt="{{ image.prompt }}">
+                    </div>
+                    <div class="gallery-info">
+                        <p class="prompt">{{ image.prompt }}</p>
+                        <p class="date">{{ image.created_at.strftime('%B %d, %Y') }}</p>
+                        <div class="gallery-actions">
+                            <button class="btn btn-sm btn-primary download-btn" onclick="downloadGalleryImage({{ image.id }})">
+                                <i class="fa fa-download"></i> Download
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-btn" onclick="deleteGalleryImage({{ image.id }})">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-images">
+            <p>You haven't generated any images yet.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Create Your First Image</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
