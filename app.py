@@ -33,15 +33,24 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
 }
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Email configuration
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_USERNAME = "dreampixel2611@gmail.com"
+SMTP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD')
 db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = 'Please log in to access this page.'
 login_manager.login_message_category = 'info'
 
-# Stability AI API configuration
-STABILITY_API_KEY = os.environ.get("STABILITY_API_KEY")
-STABILITY_API_URL = "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image"
+# Clipdrop API configuration
+CLIPDROP_API_KEY = os.environ.get("CLIPDROP_API_KEY")
+CLIPDROP_API_URL = "https://clipdrop-api.co/text-to-image/v1"
 
 # User session tracking - limit non-logged in users to 1 generation
 app.config['GUEST_LIMIT'] = 1  # Allow 1 image for non-logged-in users
@@ -61,10 +70,7 @@ with app.app_context():
 @app.route('/generate', methods=['POST'])
 def generate_image():
     """
-    Generate an image using Stability AI API based on the text prompt.
-    
-    Returns:
-        JSON response with the generated image data or error message.
+    Generate an image using Clipdrop API based on the text prompt.
     """
     try:
         data = request.json
@@ -81,40 +87,37 @@ def generate_image():
                     'details': 'You have reached the limit for free image generations. Please sign up or log in to continue.',
                     'require_auth': True
                 }), 403
+            
+            # Increment the guest generation count
             session['guest_generations'] = session.get('guest_generations', 0) + 1
         
-        if not STABILITY_API_KEY:
-            logger.error("No API key found for Stability AI")
+        if not CLIPDROP_API_KEY:
+            logger.error("No API key found for Clipdrop")
             return jsonify({
                 'error': 'API Key Missing', 
-                'details': 'Please provide a valid Stability AI API key to use this service.'
+                'details': 'Please provide a valid Clipdrop API key to use this service.'
             }), 401
         
-        logger.debug(f"Sending request to Stability AI API with prompt: {prompt}")
+        logger.debug(f"Sending request to Clipdrop API with prompt: {prompt}")
         
-        # Parameters for Stability AI
         headers = {
-            "Authorization": f"Bearer {STABILITY_API_KEY}",
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+            "x-api-key": CLIPDROP_API_KEY,
+            "Content-Type": "application/json"
         }
         
         payload = {
-            "text_prompts": [
-                {"text": prompt, "weight": 1.0},
-                {"text": "blurry, bad quality, distorted, disfigured", "weight": -1.0}
-            ],
+            "prompt": prompt,
+            "negative_prompt": "blurry, bad quality, distorted, disfigured",
             "cfg_scale": 7.0,
-            "height": 1024,
             "width": 1024,
-            "samples": 1,
-            "steps": 30
+            "height": 1024,
+            "num_inference_steps": 30
         }
         
-        response = requests.post(STABILITY_API_URL, headers=headers, json=payload, timeout=120)
+        response = requests.post(CLIPDROP_API_URL, headers=headers, json=payload, timeout=120)
         
         if response.status_code != 200:
-            logger.error(f"Stability AI API error: {response.status_code}, {response.text}")
+            logger.error(f"Clipdrop API error: {response.status_code}, {response.text}")
             error_detail = response.json().get('message', f"API returned status code {response.status_code}")
             return jsonify({
                 'error': 'Failed to generate image', 
@@ -123,16 +126,16 @@ def generate_image():
         
         response_data = response.json()
         
-        if not response_data.get('artifacts'):
+        if not response_data.get('image'):  # Adjust this based on Clipdrop API response format
             return jsonify({'error': 'No image was generated'}), 500
         
-        image_base64 = response_data['artifacts'][0]['base64']
+        image_base64 = response_data['image']
         
         if current_user.is_authenticated:
             new_image = Image(prompt=prompt, image_data=image_base64, user_id=current_user.id)
         else:
             new_image = Image(prompt=prompt, image_data=image_base64)
-        
+            
         db.session.add(new_image)
         db.session.commit()
         
@@ -144,16 +147,22 @@ def generate_image():
         })
     
     except requests.exceptions.ConnectionError:
-        logger.error("Connection error: Could not connect to Stability AI API")
-        return jsonify({'error': 'Connection Error', 'details': 'Could not connect to Stability AI API. Please check your internet connection.'}), 503
+        logger.error("Connection error: Could not connect to Clipdrop API")
+        return jsonify({
+            'error': 'Connection Error', 
+            'details': 'Could not connect to Clipdrop API. Please check your internet connection.'
+        }), 503
     
     except requests.exceptions.Timeout:
-        logger.error("Request timeout: Stability AI API took too long to respond")
-        return jsonify({'error': 'Request Timeout', 'details': 'Stability AI API took too long to respond. Try a simpler prompt.'}), 504
+        logger.error("Request timeout: Clipdrop API took too long to respond")
+        return jsonify({
+            'error': 'Request Timeout', 
+            'details': 'Clipdrop API took too long to respond. Try a simpler prompt.'
+        }), 504
     
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({'error': 'Unexpected Error', 'details': str(e)}), 500
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+        return jsonify({
+            'error': 'Unexpected Error', 
+            'details': str(e)
+        }), 500
